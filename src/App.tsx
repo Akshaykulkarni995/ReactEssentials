@@ -1,24 +1,29 @@
 import React,{useState} from "react";
 import "./App.css";
-import Player from "./components/player/player";
-import Gameboard from "./components/gameboard/gameboard";
+import Header from "./components/header/header";
+import UserInput from "./components/userInputs/userInput";
+import { Results } from "./components/results/results";
 
 function App() {
-const [activePlayer,setActivePlayer] = useState('X')
+  const [userInput,setUserInput]=useState({
+    initialInvestment:10000,
+    annualInvestment:1200,
+    expectedReturns:6,
+    duration:10
+});
 
-const handleActivePlayer = () => {
-  setActivePlayer((prev) => prev === 'X' ? 'O' : 'X')
+const handleChange= (inputIdentifier : any,newValue : any) => {
+    setUserInput((prev)=>{
+        return {...prev,[inputIdentifier]: +newValue};
+    });
 }
   return (
-    <main>
-      <div id="game-container">
-        <ol id="players">
-          <Player initialName="Player 1" symbol = "X" isActive={activePlayer === 'X'} />
-          <Player initialName="Player 2" symbol = "O" isActive={activePlayer === 'O'} />
-        </ol>
-        <Gameboard onSelectSquare={handleActivePlayer} activeSymbol={activePlayer} />
-      </div>
-    </main>
+    <>
+    <Header/>
+    <UserInput userInput={userInput} onChangeInput={handleChange} />
+    <Results inputs={userInput}/>
+    </>
+    
   );
 }
 
